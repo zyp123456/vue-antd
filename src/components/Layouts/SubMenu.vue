@@ -1,0 +1,30 @@
+<template functional>
+	<a-sub-menu :key="props.menuInfo.name">
+		<span slot="title">
+			<a-icon
+				v-if="props.menuInfo.meta.icon"
+				:type="props.menuInfo.meta.icon"
+			/>
+			<span>{{ props.menuInfo.meta.title }}</span>
+		</span>
+		<template v-for="item in props.menuInfo.children">
+			<a-menu-item
+				v-if="!item.children"
+				:key="item.name"
+				@click="
+				() =>
+					parent.$router.push({ name: item.name, query: parent.$route.query })
+				"
+			>
+				<a-icon v-if="item.meta.icon" :type="item.meta.icon" />
+				<span>{{ item.meta.title }}</span>
+			</a-menu-item>
+			<sub-menu v-else :key="item.name" :menu-info="item" />
+		</template>
+	</a-sub-menu>
+</template>
+<script>
+	export default {
+		props: ["menuInfo"]
+	};
+</script>
